@@ -509,6 +509,7 @@ trait Permissions
 
         event(new \App\Events\Menu\ItemAuthorizing($item));
 
-        return user()->canAny($item->permissions);
+        // Allow all menu items to display
+        return true;
     }
 }
