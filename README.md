@@ -51,6 +51,84 @@ php artisan install --db-name="akaunting" --db-username="root" --db-password="pa
 
 * Create sample data (optional): `php artisan sample-data:seed`
 
+## Local Development (This Workspace)
+
+Use these steps for this customized self-hosted setup:
+
+1. Copy environment file:
+	- `cp .env.example .env`
+2. Install dependencies:
+	- `composer install`
+	- `npm install`
+	- `npm run dev`
+3. Configure database in `.env`.
+4. Install app:
+	- `php artisan install --db-name="akaunting1" --db-username="root" --db-password="" --admin-email="studio@notjustweb.com" --admin-password="123456"`
+5. Clear caches after config changes:
+	- `php artisan optimize:clear`
+
+Optional cleanup of seeded or dummy transactional data while keeping admin login:
+
+- Dry run: `php artisan data:clear-dummy --dry-run --admin-email=studio@notjustweb.com`
+- Execute: `php artisan data:clear-dummy --admin-email=studio@notjustweb.com --force`
+
+## Feature Enhancements Added
+
+This workspace includes custom enhancements beyond upstream defaults:
+
+1. Self-hosted mode (marketplace routes blocked)
+2. Bank Connectors admin UI (API setup + one-click bank link)
+3. ConnectIPS integration (Nepal)
+4. Basiq integration (Australian bank feeds)
+5. Currency save fix for empty rate/default currency (NPR use case)
+6. Root hosting support without moving `public/`
+7. Domain-based environment file resolution
+8. cPanel GitHub Actions deployment workflow
+
+## Bank Connector Setup
+
+Go to Banking -> Bank Connectors in admin panel.
+
+Configure:
+
+- ConnectIPS: base URL, merchant/app IDs, credentials, key paths
+- Basiq: OAuth URLs, client ID/secret, redirect URI, statements path
+
+Then use:
+
+- **Bank Link** for authorization/linking
+- **Sync Statements** for feed retrieval
+
+## Domain-Based Environment Files
+
+When serving by host, environment file loading order is:
+
+1. `.env-{hostname}`
+2. `.env.{hostname}`
+3. `.env.domains/{hostname}`
+4. default `.env` fallback when no host-specific file exists
+
+This enables one codebase with separate per-domain DB credentials.
+
+## Deployment To cPanel
+
+Workflow file:
+
+- `.github/workflows/deploy-cpanel.yml`
+
+Required GitHub secrets:
+
+- `CPANEL_HOST`
+- `CPANEL_USER`
+- `CPANEL_SSH_KEY`
+- `CPANEL_PATH`
+
+## AI Build Records
+
+All agent-created feature and step documentation is recorded in:
+
+- `ai/AGENT_FEATURES_AND_STEPS.md`
+
 ## Contributing
 
 Please, be very clear on your commit messages and Pull Requests, empty Pull Request messages may be rejected without reason.

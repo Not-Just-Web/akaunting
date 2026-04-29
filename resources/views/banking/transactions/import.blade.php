@@ -14,7 +14,7 @@
             <div class="relative -m-2 flex items-center space-x-4 rounded-xl p-4 focus-within:ring-2 focus-within:ring-gray-500 hover:bg-gray-100">
                 <div>
                     <h2 class="text-base font-semibold text-gray-900">
-                        <a href="{{ module_is_enabled('bank-feeds') ? route('bank-feeds.bank-connections.create') : route('apps.app.show', 'bank-feeds') }}" class="focus:outline-none">
+                        <a href="{{ module_is_enabled('bank-feeds') ? route('bank-feeds.bank-connections.create') : route('bank-connectors.index') }}" class="focus:outline-none">
                             <span class="absolute inset-0" aria-hidden="true"></span>
                             <span>{{ trans_choice('general.bank_feeds', 2) }}</span>
                             <span aria-hidden="true"> &rarr;</span>
@@ -32,7 +32,7 @@
                     <div class="relative -m-2 flex items-center space-x-4 rounded-xl p-4 focus-within:ring-2 focus-within:ring-gray-500 hover:bg-gray-100">
                         <div>
                             <h3 class="text-sm font-medium text-gray-900">
-                                <a href="{{ module_is_enabled('receipt') ? route('receipt.receipts.create') : route('apps.app.show', 'receipt') }}" class="focus:outline-none">
+                                <a href="{{ module_is_enabled('receipt') ? route('receipt.receipts.create') : route('import.create', ['banking', 'transactions']) }}" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
                                     <span>{{ trans_choice('general.receipts', 2) }}</span>
                                     <span aria-hidden="true"> &rarr;</span>
@@ -50,7 +50,7 @@
                     <div class="relative -m-2 flex items-center space-x-4 rounded-xl p-4 focus-within:ring-2 focus-within:ring-gray-500 hover:bg-gray-100">
                         <div>
                             <h3 class="text-sm font-medium text-gray-900">
-                                <a href="{{ module_is_enabled('ofx') ? route('ofx.ofx.create') : route('apps.app.show', 'ofx') }}" class="focus:outline-none">
+                                <a href="{{ module_is_enabled('ofx') ? route('ofx.ofx.create') : route('import.create', ['banking', 'transactions']) }}" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
                                     <span>{{ trans_choice('general.ofx', 2) }}</span>
                                     <span aria-hidden="true"> &rarr;</span>
@@ -68,7 +68,7 @@
                     <div class="relative -m-2 flex items-center space-x-4 rounded-xl p-4 focus-within:ring-2 focus-within:ring-gray-500 hover:bg-gray-100">
                         <div>
                             <h3 class="text-sm font-medium text-gray-900">
-                                <a href="{{ module_is_enabled('mt940') ? route('mt940.create') : route('apps.app.show', 'mt940') }}" class="focus:outline-none">
+                                <a href="{{ module_is_enabled('mt940') ? route('mt940.create') : route('import.create', ['banking', 'transactions']) }}" class="focus:outline-none">
                                     <span class="absolute inset-0" aria-hidden="true"></span>
                                     <span>{{ trans_choice('general.mt940', 2) }}</span>
                                     <span aria-hidden="true"> &rarr;</span>

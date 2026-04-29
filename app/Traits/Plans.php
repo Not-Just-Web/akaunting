@@ -58,48 +58,19 @@ trait Plans
 
     public function getPlanLimitByType($type): object
     {
-        // Check if app is truly installed by reading the environment directly (not cached config)
-        $app_installed = env('APP_INSTALLED', false) === 'true' || env('APP_INSTALLED', false) === true;
-        
-        if (! $app_installed || running_in_test()) {
-            $limit = new \stdClass();
-
-            $limit->action_status = true;
-            $limit->view_status = true;
-            $limit->message = "Success";
-
-            return $limit;
-        }
-
-        if (! $data = $this->getPlanLimits()) {
-            $limit = new \stdClass();
-
-            $limit->action_status = false;
-            $limit->view_status = false;
-            $limit->message = "Not able to create a new $type.";
-
-            return $limit;
-        }
-
-        $limit = $data->$type;
-
-        $limit->message = str_replace('{company_id}', company_id(), $limit->message);
+        // Self-contained mode: Always allow all operations without cloud API calls
+        // This makes the app fully functional on a private server without external dependencies
+        $limit = new \stdClass();
+        $limit->action_status = true;
+        $limit->view_status = true;
+        $limit->message = "Success";
 
         return $limit;
     }
 
     public function getPlanLimits(): bool|object
     {
-        $key = 'plans.limits';
-
-        return Cache::remember($key, Date::now()->addHour(), function () {
-            $url = 'plans/limits';
-
-            if (! $data = static::getResponseData('GET', $url, ['timeout' => 10])) {
-                return false;
-            }
-
-            return $data;
-        });
+        // Disabled cloud API call - app is self-contained
+        return false;
     }
 }

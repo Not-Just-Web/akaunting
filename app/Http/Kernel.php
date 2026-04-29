@@ -183,6 +183,7 @@ class Kernel extends HttpKernel
         'install.can' => \App\Http\Middleware\CanInstall::class,
         'install.redirect' => \App\Http\Middleware\RedirectIfNotInstalled::class,
         'money' => \App\Http\Middleware\Money::class,
+        'offline.apps' => \App\Http\Middleware\RedirectMarketplaceToLocal::class,
         'read.only' => \App\Http\Middleware\CheckForReadOnlyMode::class,
         'wizard.redirect' => \App\Http\Middleware\RedirectIfWizardNotCompleted::class,
 

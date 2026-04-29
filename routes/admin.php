@@ -126,6 +126,19 @@ Route::group(['prefix' => 'purchases'], function () {
 });
 
 Route::group(['prefix' => 'banking'], function () {
+    Route::get('bank-connectors', 'Banking\BankConnectors@index')->name('bank-connectors.index');
+    Route::patch('bank-connectors/connectips/settings', 'Banking\BankConnectors@saveConnectIpsSettings')->name('bank-connectors.connectips.settings');
+    Route::patch('bank-connectors/basiq/settings', 'Banking\BankConnectors@saveBasiqSettings')->name('bank-connectors.basiq.settings');
+    Route::delete('bank-connectors/basiq/token', 'Banking\BankConnectors@disconnectBasiq')->name('bank-connectors.basiq.disconnect');
+
+    Route::get('bank-connectors/connectips/link', 'Banking\BankConnectors@connectIpsLink')->name('bank-connectors.connectips.link');
+    Route::get('bank-connectors/connectips/return', 'Banking\BankConnectors@connectIpsReturn')->name('bank-connectors.connectips.return');
+    Route::post('bank-connectors/connectips/validate', 'Banking\BankConnectors@connectIpsValidate')->name('bank-connectors.connectips.validate');
+
+    Route::get('bank-connectors/basiq/connect', 'Banking\BankConnectors@basiqConnect')->name('bank-connectors.basiq.connect');
+    Route::get('bank-connectors/basiq/callback', 'Banking\BankConnectors@basiqCallback')->name('bank-connectors.basiq.callback');
+    Route::get('bank-connectors/basiq/statements', 'Banking\BankConnectors@basiqStatements')->name('bank-connectors.basiq.statements');
+
     Route::get('accounts/currency', 'Banking\Accounts@currency')->name('accounts.currency');
     Route::get('accounts/{account}/create-income', 'Banking\Accounts@createIncome')->name('accounts.create-income');
     Route::get('accounts/{account}/create-expense', 'Banking\Accounts@createExpense')->name('accounts.create-expense');
@@ -209,7 +222,7 @@ Route::group(['as' => 'settings.'], function () {
     Route::patch('{alias}/settings', 'Settings\Modules@update')->middleware('dropzone')->name('module.update');
 });
 
-Route::group(['as' => 'apps.', 'prefix' => 'apps'], function () {
+Route::group(['as' => 'apps.', 'prefix' => 'apps', 'middleware' => 'offline.apps'], function () {
     Route::resource('api-key', 'Modules\ApiKey');
 
     Route::group(['middleware' => 'api.key'], function () {

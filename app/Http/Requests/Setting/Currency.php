@@ -6,6 +6,15 @@ use App\Abstracts\Http\FormRequest;
 
 class Currency extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $rate = $this->request->get('rate');
+
+        if ($rate === null || $rate === '') {
+            $this->merge(['rate' => '1']);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +35,7 @@ class Currency extends FormRequest
         return [
             'name' => 'required|string',
             'code' => 'required|string|currency_code|unique:currencies,NULL,' . ($id ?? 'null') . ',id,company_id,' . $company_id . ',deleted_at,NULL',
-            'rate' => 'required|gt:0',
+            'rate' => 'nullable|gt:0',
             'enabled' => 'integer|boolean',
             'default_currency' => 'nullable|boolean',
             'decimal_mark' => 'nullable|string|different:thousands_separator|regex:/^[A-Za-z.,_\s-]+$/',

@@ -1,0 +1,82 @@
+name: CI, Test, Build & Deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check if composer.lock changed
+        id: composer-check
+        run: |
+          set -e
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch --no-tags --prune --depth=1 origin "${{ github.event.pull_request.base.ref }}"
+            if git diff --name-only "origin/${{ github.event.pull_request.base.ref }}"...HEAD | grep -q "composer.lock"; then
+              echo "changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "changed=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            if git diff --name-only HEAD~1 HEAD 2>/dev/null | grep -q "composer.lock"; then
+              echo "changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "changed=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Setup PHP
+        if: steps.composer-check.outputs.changed == 'true'
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Install Composer dependencies
+        if: steps.composer-check.outputs.changed == 'true'
+        run: |
+          composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+
+      - name: Read .deploy-ignore for FTP exclude
+        id: deployignore
+        run: |
+          echo "DEPLOY_EXCLUDE<<EOF" >> $GITHUB_ENV
+          grep -v '^#' .deploy-ignore >> $GITHUB_ENV
+          if [ "${{ steps.composer-check.outputs.changed }}" != "true" ]; then
+            echo "vendor/" >> $GITHUB_ENV
+            echo "vendor/**" >> $GITHUB_ENV
+            echo "**/vendor/" >> $GITHUB_ENV
+            echo "**/vendor/**" >> $GITHUB_ENV
+          fi
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Print DEPLOY_EXCLUDE for debug
+        run: |
+          echo "DEPLOY_EXCLUDE contents:"
+          echo "$DEPLOY_EXCLUDE"
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ vars.FTP_SERVER_STAGING }}
+          port: 21
+          username: ${{ vars.FTP_USERNAME_STAGING }}
+          password: ${{ secrets.FTP_PASSWORD_STAGING }}
+          protocol: ftp
+          local-dir: ./
+          server-dir: ${{ vars.FTP_SERVER_DIR_STAGING }}
+          exclude: ${{ env.DEPLOY_EXCLUDE }}

@@ -48,7 +48,7 @@ const app = new Vue({
                 }
             })
             .then(response => {
-                this.form.rate = response.data.rate;
+                this.form.rate = response.data.rate ?? 1;
                 this.form.precision = response.data.precision;
                 this.form.symbol = response.data.symbol;
                 this.form.symbol_first = response.data.symbol_first;

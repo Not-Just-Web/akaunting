@@ -5,7 +5,6 @@ namespace App\Listeners\Menu;
 use App\Traits\Permissions;
 use App\Events\Menu\AdminCreated as Event;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 class ShowInAdmin
 {
@@ -97,6 +96,9 @@ class ShowInAdmin
                 if ($this->canAccessMenuItem($title, 'read-banking-reconciliations')) {
                     $sub->route('reconciliations.index', $title, [], 40, $attr);
                 }
+
+                $title = 'Bank Connectors';
+                $sub->route('bank-connectors.index', $title, [], 50, $attr);
             }, 50, [
                 'title' => $title,
                 'icon' => 'account_balance',
@@ -109,11 +111,6 @@ class ShowInAdmin
             $menu->route('reports.index', $title, [], 60, ['icon' => 'donut_small']);
         }
 
-        // Apps
-        $title = trim(trans_choice('general.modules', 2));
-        if ($this->canAccessMenuItem($title, 'read-modules-home')) {
-            $active = (Str::contains(Route::currentRouteName(), 'apps')) ? true : false;
-            $menu->route('apps.home.index', $title, [], 80, ['icon' => 'rocket_launch', 'active' => $active]);
-        }
+        // Apps marketplace is disabled for self-hosted mode.
     }
 }
