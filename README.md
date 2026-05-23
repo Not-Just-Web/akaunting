@@ -56,7 +56,12 @@ valet link akaunting
 valet secure akaunting
 ```
 
-Open the app at the Valet URL shown by your local setup.
+
+By default, Valet will serve this project at:
+
+	http://akaunting.test
+
+Open this URL in your browser after starting Valet. If you want a custom domain, use `valet link <name>`.
 
 ### Option B: Artisan server
 
