@@ -1,6 +1,15 @@
+# Force PHP 8.2 via CloudLinux
+AddHandler application/x-httpd-alt-php82 .php
+
 # Prevent Directory Listing
 <IfModule autoindex>
     IndexIgnore *
+</IfModule>
+
+# cPanel MultiPHP support (PHP 8.1)
+# Keep this block when your domain is set to PHP 8.1 in MultiPHP Manager.
+<IfModule mime_module>
+    AddHandler application/x-httpd-ea-php81 .php .php8 .phtml
 </IfModule>
 
 <IfModule mod_rewrite.c>
@@ -37,6 +46,14 @@
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Serve static assets from /public when using project root as document root.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -d
+    RewriteRule ^(.*)$ public/$1 [L]
 
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d

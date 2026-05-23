@@ -1,82 +1,241 @@
-﻿# Akaunting™
+﻿# Akaunting (Customized Self-Hosted Setup)
 
-[![Release](https://img.shields.io/github/v/release/akaunting/akaunting?label=release)](https://github.com/akaunting/akaunting/releases)
-![Downloads](https://img.shields.io/github/downloads/akaunting/akaunting/total?label=downloads)
-[![Translations](https://badges.crowdin.net/akaunting/localized.svg)](https://crowdin.com/project/akaunting)
-[![Tests](https://img.shields.io/github/actions/workflow/status/akaunting/akaunting/tests.yml?label=tests)](https://github.com/akaunting/akaunting/actions)
-
-Online accounting software designed for small businesses and freelancers. Akaunting is built with modern technologies such as Laravel, VueJS, Tailwind, RESTful API etc. Thanks to its modular structure, Akaunting provides an awesome App Store for users and developers.
-
-* [Home](https://akaunting.com) - The house of Akaunting
-* [Forum](https://akaunting.com/forum) - Ask for support
-* [Documentation](https://akaunting.com/hc/docs) - Learn how to use
-* [Developer Portal](https://developer.akaunting.com) - Generate passive income
-* [App Store](https://akaunting.com/apps) - Extend your Akaunting
-* [Translations](https://crowdin.com/project/akaunting) - Help us translate Akaunting
+This repository is a customized Akaunting setup focused on self-hosted operation, local bank connector integrations, and cPanel-friendly deployment.
 
 ## Requirements
 
-* PHP 8.1 or higher
-* Database (e.g.: MariaDB, MySQL, PostgreSQL, SQLite)
-* Web Server (eg: Apache, Nginx, IIS)
-* [Other libraries](https://akaunting.com/hc/docs/on-premise/requirements/)
+- PHP 8.1+
+- Composer
+- Node.js + npm
+- MySQL/MariaDB (or supported Laravel database)
+- Web server (Valet, Apache, Nginx, cPanel)
 
-## Framework
+## Quick Start (Local)
 
-Akaunting uses [Laravel](http://laravel.com), the best existing PHP framework, as the foundation framework and [Module](https://github.com/akaunting/module) package for Apps.
-
-## Installation
-
-Before installing Akaunting, make sure your environment has the required dependencies installed:
-
-* PHP 8.1 or higher with the required PHP extensions
-* Composer
-* Node.js and npm
-* Git
-* A supported database server, such as MariaDB, MySQL, PostgreSQL, or SQLite
-* A web server, such as Apache, Nginx, or IIS
-* Build tools required by some npm packages, such as `build-essential` on Debian/Ubuntu systems
-
-For the full list of PHP extensions and server requirements, see the [on-premise requirements](https://akaunting.com/hc/docs/on-premise/requirements/).
-
-Then install Akaunting:
-
-* Clone the repository: `git clone https://github.com/akaunting/akaunting.git`
-* Install dependencies: `composer install ; npm install ; npm run dev`
-* Install Akaunting:
+1. Install dependencies:
 
 ```bash
-php artisan install --db-name="akaunting" --db-username="root" --db-password="pass" --admin-email="admin@company.com" --admin-password="123456"
+composer install
+npm install
 ```
 
-* Create sample data (optional): `php artisan sample-data:seed`
+2. Create local environment file:
 
-## Contributing
+```bash
+cp .env.example .env
+```
 
-Please, be very clear on your commit messages and Pull Requests, empty Pull Request messages may be rejected without reason.
+3. Set your database values in `.env`.
 
-When contributing code to Akaunting, you must follow the PSR coding standards. The golden rule is: Imitate the existing Akaunting code.
+4. Build frontend assets:
 
-Please note that this project is released with a [Contributor Code of Conduct](https://akaunting.com/conduct). *By participating in this project you agree to abide by its terms*.
+```bash
+npm run dev
+```
 
-## Translation
+5. Install app:
 
-If you'd like to contribute translations, please check out our [Crowdin](https://crowdin.com/project/akaunting) project.
+```bash
+php artisan install --db-name="akaunting1" --db-username="root" --db-password="" --admin-email="studio@notjustweb.com" --admin-password="123456"
+```
 
-## Changelog
+6. Clear caches:
 
-Please see [Releases](../../releases) for more information about what has changed recently.
+```bash
+php artisan optimize:clear
+```
 
-## Security
+## How To Start Services
 
-Please review [our security policy](https://github.com/akaunting/akaunting/security/policy) on how to report security vulnerabilities.
+Use one of the following ways.
 
-## Credits
+### Option A: Laravel Valet
 
-* [Denis Duliçi](https://github.com/denisdulici)
-* [Cüneyt Şentürk](https://github.com/cuneytsenturk)
-* [All Contributors](../../contributors)
+```bash
+valet link akaunting
+valet secure akaunting
+```
 
-## License
+Open the app at the Valet URL shown by your local setup.
 
-Akaunting is released under the [BSL license](LICENSE.txt).
+### Option B: Artisan server
+
+```bash
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+Open http://127.0.0.1:8000
+
+### Frontend watch mode (optional)
+
+```bash
+npm run watch
+```
+
+## How To Test The App
+
+### Automated tests
+
+```bash
+php artisan test
+```
+
+### Manual smoke test checklist
+
+1. Login with admin credentials.
+2. Open Banking -> Bank Connectors.
+3. Save ConnectIPS/Basiq API settings.
+4. Test Bank Link and statement sync actions.
+5. Create incoming and outgoing transactions.
+6. Open Reports and verify monthly totals.
+
+## Troubleshooting Install (Exit Code 1)
+
+If `php artisan install ...` fails with exit code `1`, run this checklist in order.
+
+1. Verify PHP and extensions:
+
+```bash
+php -v
+php -m | grep -E "mbstring|openssl|pdo|pdo_mysql|xml|ctype|json|bcmath|zip"
+```
+
+2. Verify database connectivity from Laravel env:
+
+```bash
+php artisan tinker --execute="DB::connection()->getPdo(); echo 'DB OK';"
+```
+
+3. Clear stale caches:
+
+```bash
+php artisan optimize:clear
+```
+
+4. Ensure writable permissions:
+
+```bash
+chmod -R ug+rwx storage bootstrap/cache
+```
+
+5. Regenerate app key if missing:
+
+```bash
+php artisan key:generate
+```
+
+6. Run migrations directly to surface DB errors:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+7. Re-run installer with explicit options:
+
+```bash
+php artisan install --db-host="localhost" --db-port="3306" --db-name="akaunting1" --db-username="root" --db-password="" --admin-email="studio@notjustweb.com" --admin-password="123456"
+```
+
+8. If still failing, inspect latest logs:
+
+```bash
+tail -n 200 storage/logs/laravel.log
+```
+
+9. If setup was partially completed already, skip installer and use:
+
+```bash
+php artisan migrate --force
+php artisan optimize:clear
+```
+
+## Features Added In This Workspace
+
+1. Self-hosted mode with marketplace fallback removed.
+2. Bank Connectors admin panel UI.
+3. ConnectIPS integration (Nepal).
+4. Basiq integration (Australian bank feeds).
+5. Currency save fix for empty rate/default currency use case.
+6. Root hosting support without moving `public/`.
+7. Domain-based env resolution with fallback to default `.env`.
+8. FTP deployment workflow for cPanel.
+9. Lint + Prettier + Husky hooks.
+10. Dummy/sample data cleanup command.
+
+## Bank Connectors Setup
+
+Go to Banking -> Bank Connectors.
+
+Configure:
+
+- ConnectIPS credentials and certificate paths.
+- Basiq OAuth/API credentials.
+
+Use:
+
+- Bank Link
+- Sync Statements
+
+## Environment Resolution By Host
+
+At runtime, env file resolution order is:
+
+1. `.env-{hostname}`
+2. `.env.{hostname}`
+3. `.env.domains/{hostname}`
+4. fallback `.env`
+
+## Deployment (FTP / cPanel)
+
+Workflow file:
+
+- `.github/workflows/deploy-cpanel.yml`
+
+Deploy exclude rules file:
+
+- `.deploy-ignore`
+
+Required GitHub variables/secrets:
+
+- `vars.FTP_SERVER_STAGING`
+- `vars.FTP_USERNAME_STAGING`
+- `vars.FTP_SERVER_DIR_STAGING`
+- `secrets.FTP_PASSWORD_STAGING`
+
+## Code Quality And Hooks
+
+Local commands:
+
+- `npm run lint`
+- `npm run lint:fix`
+- `npm run format`
+- `npm run format:check`
+
+Git hooks:
+
+- `.husky/pre-commit` -> `npx lint-staged`
+- `.husky/pre-push` -> `npm run lint`
+
+CI workflow:
+
+- `.github/workflows/quality.yml`
+
+## Cleanup Dummy Data
+
+Dry run:
+
+```bash
+php artisan data:clear-dummy --dry-run --admin-email=studio@notjustweb.com
+```
+
+Execute:
+
+```bash
+php artisan data:clear-dummy --admin-email=studio@notjustweb.com --force
+```
+
+## AI Build Records
+
+All agent-created build notes are stored in:
+
+- `ai/AGENT_FEATURES_AND_STEPS.md`

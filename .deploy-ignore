@@ -1,0 +1,26 @@
+# VCS and CI
+**/.git*
+**/.github/**
+
+# Local dependency/build caches
+**/node_modules/**
+**/npm-debug.log*
+**/yarn-error.log*
+
+# Tests and local tooling
+**/tests/**
+**/.phpunit.result.cache
+
+# Environment files (managed per-domain on server)
+**/.env
+**/.env.*
+
+# Runtime-generated files
+**/storage/logs/**
+**/storage/framework/cache/**
+**/storage/framework/sessions/**
+**/storage/framework/views/**
+
+# OS/editor noise
+**/.DS_Store
+**/*.swp
