@@ -26,7 +26,7 @@
 
         <div class="main-content xl:ltr:ml-64 xl:rtl:mr-64 transition-all ease-in-out" id="panel">
             <div id="main-body">
-                <div class="container">
+                <div class="container" style="position:relative;">
                     <x-layouts.admin.header>
                         <x-slot name="title">
                             {!! ! empty($title->attributes->has('title')) ? $title->attributes->get('title') : $title !!}
