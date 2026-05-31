@@ -21,6 +21,9 @@
 **/storage/framework/sessions/**
 **/storage/framework/views/**
 
+**/vendor/**
+
+
 # OS/editor noise
 **/.DS_Store
 **/*.swp
