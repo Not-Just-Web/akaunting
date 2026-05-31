@@ -111,9 +111,10 @@
         @stack('attachment_end')
     </div>
 
-    <div class="w-full lg:w-7/12">
+    <div class="w-full lg:w-7/12" style="position:relative;">
         @stack('document_start')
 
+        <x-show.invoice-status-stamp :status="$document->status" />
         <x-documents.show.template type="{{ $type }}" :document="$document" />
 
         @stack('document_end')
