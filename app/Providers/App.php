@@ -51,5 +51,25 @@ class App extends Provider
                 report("Attempted to lazy load [{$relation}] on model [{$class}].");
             }
         });
+
+        // Register all offline payment methods from settings for PaymentMethodShowing event
+        \Illuminate\Support\Facades\Event::listen(
+            \App\Events\Module\PaymentMethodShowing::class,
+            function ($event) {
+                $methods = json_decode(setting('offline-payments.methods', '[]'), true);
+                if (is_array($methods)) {
+                    foreach ($methods as $method) {
+                        $event->modules->payment_methods[] = [
+                            'code' => $method['code'],
+                            'name' => $method['name'],
+                            'type' => 'offline',
+                            'customer' => $method['customer'] ?? '0',
+                            'order' => $method['order'] ?? null,
+                            'description' => $method['description'] ?? null,
+                        ];
+                    }
+                }
+            }
+        );
     }
 }

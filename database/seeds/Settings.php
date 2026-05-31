@@ -27,7 +27,7 @@ class Settings extends Seeder
 
         $offline_payments = [
             [
-                'code' => 'offline-payments.cash.1',
+                'code' => 'offline-payments.cash',
                 'name' => trans('demo.offline_payments.cash'),
                 'customer' => '0',
                 'order' => '1',

@@ -12,7 +12,7 @@ return [
     ],
 
     'currencies' => [
-        'usd'               => 'US Dollar',
+        'npr'               => 'Nepalese Rupee',
     ],
 
     'offline_payments' => [
