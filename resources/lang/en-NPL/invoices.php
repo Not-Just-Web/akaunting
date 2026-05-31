@@ -3,8 +3,8 @@
 return [
 
     'invoice_number'        => 'Tax Invoice Number',
-    'invoice_date'          => 'Invoice Date',
-    'invoice_amount'        => 'Invoice Amount',
+    'invoice_date'          => 'Tax Invoice Date',
+    'invoice_amount'        => 'Tax Invoice Amount',
     'total_price'           => 'Total Price',
     'due_date'              => 'Due Date',
     'order_number'          => 'Order Number',
