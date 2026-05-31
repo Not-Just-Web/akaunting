@@ -19,7 +19,7 @@ class Language extends Controller
         $lang_allowed = language()->allowed();
 
         if (! $locale || ! array_key_exists($locale, $lang_allowed)) {
-            $locale = 'en-GB';
+            $locale = 'en-NPL';
         }
 
         return view('install.language.create', compact('locale', 'lang_allowed'));

@@ -136,7 +136,7 @@ return [
     | This options indicates the language allowed languages.
     |
     */
-    'allowed'       => ['ar-SA', 'az-AZ', 'bg-BG', 'bn-BD', 'bs-BA', 'ca-ES', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-AU', 'en-GB', 'en-US', 'es-AR', 'es-ES', 'es-MX', 'et-EE', 'fa-IR', 'fr-FR', 'he-IL', 'hi-IN', 'hr-HR', 'hu-HU', 'id-ID', 'is-IS', 'it-IT', 'ja-JP', 'ka-GE', 'ko-KR', 'lt-LT', 'lv-LV', 'mk-MK', 'ms-MY', 'nb-NO', 'ne-NP', 'nl-NL', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO', 'ru-RU', 'sk-SK', 'sl-SI', 'sr-RS', 'sq-AL', 'sv-SE', 'th-TH', 'tr-TR', 'uk-UA', 'ur-PK', 'uz-UZ',  'vi-VN', 'zh-CN', 'zh-TW'],
+    'allowed'       => ['ar-SA', 'az-AZ', 'bg-BG', 'bn-BD', 'bs-BA', 'ca-ES', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-AU', 'en-GB', 'en-NPL', 'en-US', 'es-AR', 'es-ES', 'es-MX', 'et-EE', 'fa-IR', 'fr-FR', 'he-IL', 'hi-IN', 'hr-HR', 'hu-HU', 'id-ID', 'is-IS', 'it-IT', 'ja-JP', 'ka-GE', 'ko-KR', 'lt-LT', 'lv-LV', 'mk-MK', 'ms-MY', 'nb-NO', 'ne-NP', 'nl-NL', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO', 'ru-RU', 'sk-SK', 'sl-SI', 'sr-RS', 'sq-AL', 'sv-SE', 'th-TH', 'tr-TR', 'uk-UA', 'ur-PK', 'uz-UZ',  'vi-VN', 'zh-CN', 'zh-TW'],
 
     /*
     |--------------------------------------------------------------------------
@@ -165,6 +165,7 @@ return [
         ['short' => 'en',       'long' => 'en-AU',      'direction' => 'ltr',       'english' => 'English (AU)',        'native' => 'English (AU)'],
         ['short' => 'en',       'long' => 'en-CA',      'direction' => 'ltr',       'english' => 'English (CA)',        'native' => 'English (CA)'],
         ['short' => 'en',       'long' => 'en-GB',      'direction' => 'ltr',       'english' => 'English (GB)',        'native' => 'English (GB)'],
+        ['short' => 'en',       'long' => 'en-NPL',     'direction' => 'ltr',       'english' => 'English (NPL)',       'native' => 'English (NPL)'],
         ['short' => 'en',       'long' => 'en-US',      'direction' => 'ltr',       'english' => 'English (US)',        'native' => 'English (US)'],
         ['short' => 'es',       'long' => 'es-ES',      'direction' => 'ltr',       'english' => 'Spanish',             'native' => 'Español'],
         ['short' => 'et',       'long' => 'et-EE',      'direction' => 'ltr',       'english' => 'Estonian',            'native' => 'Eesti'],
