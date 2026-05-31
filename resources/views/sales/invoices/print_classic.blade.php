@@ -4,6 +4,7 @@
     </x-slot>
 
     <x-slot name="content">
+        <x-show.invoice-status-stamp :status="$invoice->status" :show-draft="false" />
         <x-documents.template.classic
             type="invoice"
             :document="$invoice"

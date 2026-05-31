@@ -17,9 +17,18 @@
     .invoice-stamp-cancelled {
         color: rgba(220,38,38,0.18); /* red-600 with opacity */
     }
+    .invoice-stamp-draft {
+        color: rgba(59,130,246,0.18); /* blue-600 with opacity */
+    }
 </style>
+@php
+    // $showDraft: if set to false, do not show DRAFT watermark
+    $showDraft = $showDraft ?? true;
+@endphp
 @if ($status === 'paid')
     <div class="invoice-stamp invoice-stamp-paid">PAID</div>
 @elseif ($status === 'cancelled')
     <div class="invoice-stamp invoice-stamp-cancelled">CANCELLED</div>
+@elseif ($status === 'draft' && $showDraft)
+    <div class="invoice-stamp invoice-stamp-draft">DRAFT</div>
 @endif
