@@ -72,6 +72,7 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'sales'], function () {
     Route::get('invoices/{invoice}/sent', 'Sales\Invoices@markSent')->name('invoices.sent');
+    Route::patch('invoices/{invoice}/cancel', 'Sales\Invoices@cancel')->name('invoices.cancel');
     Route::get('invoices/{invoice}/cancelled', 'Sales\Invoices@markCancelled')->name('invoices.cancelled');
     Route::get('invoices/{invoice}/restore', 'Sales\Invoices@restoreInvoice')->name('invoices.restore');
     Route::get('invoices/{invoice}/email', 'Sales\Invoices@emailInvoice')->name('invoices.email');
