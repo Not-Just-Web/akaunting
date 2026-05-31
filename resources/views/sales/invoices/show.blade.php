@@ -4,10 +4,7 @@
     </x-slot>
 
     <x-slot name="status">
-        <div class="akaunting-invoice-status-slot" style="position:relative;">
-            <x-show.status status="{{ $invoice->status }}" background-color="bg-{{ $invoice->status_label }}" text-color="text-text-{{ $invoice->status_label }}" />
-            <x-show.invoice-status-stamp :status="$invoice->status" />
-        </div>
+        <x-show.status status="{{ $invoice->status }}" background-color="bg-{{ $invoice->status_label }}" text-color="text-text-{{ $invoice->status_label }}" />
     </x-slot>
 
     <x-slot name="buttons">
