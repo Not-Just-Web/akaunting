@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Sales;
 
 use App\Abstracts\Http\Controller;
@@ -19,6 +18,27 @@ use App\Traits\Documents;
 class Invoices extends Controller
 {
     use Documents;
+
+
+    /**
+     * Cancel the specified invoice.
+     *
+     * @param  Document $invoice
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function cancel(Document $invoice)
+    {
+        if (in_array($invoice->status, ['paid', 'cancelled'])) {
+            flash(trans('messages.error.action_not_allowed'))->error();
+            return redirect()->route('invoices.show', $invoice->id);
+        }
+
+        $invoice->status = 'cancelled';
+        $invoice->save();
+
+        flash(trans('messages.success.updated', ['type' => trans_choice('general.invoices', 1)]))->success();
+        return redirect()->route('invoices.show', $invoice->id);
+    }
 
     public string $type = Document::INVOICE_TYPE;
 
