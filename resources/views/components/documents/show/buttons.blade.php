@@ -24,7 +24,7 @@
 
 @can($permissionUpdate)
     @if (!in_array($document->status, ['paid', 'cancelled']))
-        <form action="{{ route('invoices.cancel', ['invoice' => $document->id]) }}" method="POST" style="display:inline">
+        <form action="{{ route('invoices.cancel', ['company_id' => $document->company_id, 'invoice' => $document->id]) }}" method="POST" style="display:inline">
             @csrf
             @method('PATCH')
             <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium leading-6 ml-2" onclick="return confirm('Are you sure you want to cancel this invoice?')">
